@@ -1,9 +1,11 @@
-=== Curator.io: Show all your social media posts in a beautiful feed. ===
+=== Curator.io ===
+Description: Show all your social media posts in a beautiful feed.
 Contributors: curatorio
-Tags: social media feed, social media analytics, social media embed, social media aggregator, social media embed, embed social media, social hub, social, media, hash tag, hashtag, aggregate, aggregator, Facebook, Twitter, Instagram, YouTube, Tumblr, RSS, Flickr, Vimeo, Yelp, Deviant Art, DeviantArt, Spotify, Slack, feed aggregator, hashtag aggregator, hash tag aggregator, widget, hashtag widget, hash tag widget, social widget, social media widget, sidebar
+Tags: social media feed, aggregator, Facebook, Twitter, Instagram
 Requires at least: 4.0
-Tested up to: 6.3.2
-Stable tag: 1.9
+Tested up to: 6.6.2
+Stable tag: 1.9.3
+License: GNUGPLv3
 
 Aggregate and embed your social media posts on your site (Facebook, Twitter, Instagram, Pinterest and many more) as a beautiful social media feed.
 
@@ -27,6 +29,13 @@ Once you're done that you can use the shortcode:
 `[curator feed_public_key="FEED_PUBLIC_KEY"]` in any post or page
 
 == Changelog ==
+= 1.9.3 =
+* Security updates
+= 1.9.2 =
+* Security updates
+= 1.9.1 =
+* Supported version up to 6.6.2
+* Security updates
 = 1.9 =
 * Supported version up to 6.3.2
 * Compatibility changes for PHP 8.2

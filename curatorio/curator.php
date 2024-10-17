@@ -4,8 +4,9 @@
  *  Plugin URI: https://curator.io/wordpress-plugin/
  *  Description: A free social media wall and post aggregator which pulls together all your media channels in a brandable feed that can be embedded anywhere.
  *  Author: Thomas Garrood
- *  Version: 1.9
- *  Text Domain: curator.io
+ *  Version: 1.9.3
+ *  Text Domain: curator
+ *  License: GNUGPLv3
  *  @since 1.1
  */
 
@@ -32,7 +33,7 @@ class CuratorPlugin {
 		$this->stylesheet_dir = WP_STYLESHEET_DIR;
 		$this->stylesheet_uri = WP_STYLESHEET_URL;
 
-		$this->version = '1.0.0';
+		$this->version = '1.9.3';
 
 		// load include files
 		$this->shortcode = new CuratorShortcode();
@@ -40,7 +41,7 @@ class CuratorPlugin {
 			$this->settings = new CuratorSettings();
 		}
 
-        add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_settings_link' ) );
+    add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $this, 'plugin_settings_link' ) );
 	}
 
 	public static function instance() {
@@ -75,16 +76,12 @@ class CuratorPlugin {
 		}
 	}
 
-	public function init() {
-
-	}
-
-    function plugin_settings_link($links) {
-        $url = get_admin_url() . 'admin.php?page=curator-settings';
-        $settings_link = '<a href="'.$url.'">' . __( 'Settings', 'curator' ) . '</a>';
-        array_unshift( $links, $settings_link );
-        return $links;
-    }
+  function plugin_settings_link($links) {
+      $url = get_admin_url() . 'admin.php?page=curator-settings';
+      $settings_link = '<a href="'.$url.'">' . __( 'Settings', 'curator' ) . '</a>';
+      array_unshift( $links, $settings_link );
+      return $links;
+  }
 }
 
 $GLOBALS['CuratorPlugin'] = CuratorPlugin::instance();
@@ -98,7 +95,7 @@ function curator_feed($args = '')
     }
 
     $widget = new CuratorFeed();
-    echo $widget->render ($args);
+    echo wp_kses($widget->render($args), $widget->allowed_html);
 }
 
 function curator_add_admin_class() {
