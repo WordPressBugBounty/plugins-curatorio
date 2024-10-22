@@ -4,7 +4,7 @@ Contributors: curatorio
 Tags: social media feed, aggregator, Facebook, Twitter, Instagram
 Requires at least: 4.0
 Tested up to: 6.6.2
-Stable tag: 1.9.3
+Stable tag: 1.9.4
 License: GNUGPLv3
 
 Aggregate and embed your social media posts on your site (Facebook, Twitter, Instagram, Pinterest and many more) as a beautiful social media feed.
@@ -29,6 +29,8 @@ Once you're done that you can use the shortcode:
 `[curator feed_public_key="FEED_PUBLIC_KEY"]` in any post or page
 
 == Changelog ==
+= 1.9.4 =
+* Fix for JS not loading on some sites
 = 1.9.3 =
 * Security updates
 = 1.9.2 =

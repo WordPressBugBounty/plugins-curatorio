@@ -6,7 +6,7 @@ class CuratorShortcode {
 		'curator',
 	);
 
-  public function __construct() {
+	public function __construct() {
 		add_shortcode( 'curator', array( $this, 'curator_feed') );
 	}
 
