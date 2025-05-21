@@ -1,10 +1,10 @@
 === Curator.io ===
 Description: Show all your social media posts in a beautiful feed.
 Contributors: curatorio
-Tags: social media feed, aggregator, Facebook, Twitter, Instagram
+Tags: social media feed, aggregator, Facebook, Twitter, Instagram, Tiktok, Google Reviews
 Requires at least: 4.0
-Tested up to: 6.6.2
-Stable tag: 1.9.4
+Tested up to: 6.8.1
+Stable tag: 1.9.5
 License: GNUGPLv3
 
 Aggregate and embed your social media posts on your site (Facebook, Twitter, Instagram, Pinterest and many more) as a beautiful social media feed.
@@ -16,7 +16,7 @@ Unlike other social media aggregators Curator.io doesn’t use IFRAMEs. It allow
 
 The end result is a social media stream that seamlessly integrates into your website.
 
-Currently Curator.io supports Facebook, Twitter, Instagram, YouTube, Tumblr, Flickr, Vimeo, Yelp, Deviant Art, Slack and RSS. If there is a social media site that you would like us to integrate please, get in touch and we’ll add support as soon as possible.
+Currently Curator.io supports Facebook, Twitter, Instagram, TikTok, YouTube, Tumblr, Flickr, Vimeo, Yelp, Deviant Art, Slack and RSS. If there is a social media site that you would like us to integrate please, get in touch and we’ll add support as soon as possible.
 
 Visit [curator.io](https://curator.io) for more information
 
@@ -29,6 +29,8 @@ Once you're done that you can use the shortcode:
 `[curator feed_public_key="FEED_PUBLIC_KEY"]` in any post or page
 
 == Changelog ==
+= 1.9.5 =
+* Compatibility check for Wordpress 6.8.1
 = 1.9.4 =
 * Fix for JS not loading on some sites
 = 1.9.3 =
