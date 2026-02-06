@@ -4,7 +4,7 @@
  *  Plugin URI: https://curator.io/wordpress-plugin/
  *  Description: A free social media wall and post aggregator which pulls together all your media channels in a brandable feed that can be embedded anywhere.
  *  Author: Thomas Garrood
- *  Version: 1.9.5
+ *  Version: 1.9.6
  *  Text Domain: curator
  *  License: GNUGPLv3
  *  @since 1.1
@@ -27,13 +27,13 @@ class CuratorPlugin {
 		$this->define_constants();
 		$this->includes();
 
-		$this->dir = WP_DIR;
-		$this->uri = WP_URI;
-		$this->temp_uri = WP_TEMP_URL;
-		$this->stylesheet_dir = WP_STYLESHEET_DIR;
-		$this->stylesheet_uri = WP_STYLESHEET_URL;
+		$this->dir = CURATOR_DIR;
+		$this->uri = CURATOR_URI;
+		$this->temp_uri = CURATOR_TEMP_URL;
+		$this->stylesheet_dir = CURATOR_STYLESHEET_DIR;
+		$this->stylesheet_uri = CURATOR_STYLESHEET_URL;
 
-		$this->version = '1.9.5';
+		$this->version = '1.9.6';
 
 		// load include files
 		$this->shortcode = new CuratorShortcode();
@@ -55,18 +55,18 @@ class CuratorPlugin {
 	}
 
 	public function includes() {
-		require_once WP_DIR . 'inc/feed.php';
-		require_once WP_DIR . 'inc/settings.php';
-		require_once WP_DIR . 'inc/shortcode.php';
+		require_once CURATOR_DIR . 'inc/feed.php';
+		require_once CURATOR_DIR . 'inc/settings.php';
+		require_once CURATOR_DIR . 'inc/shortcode.php';
 	}
 
 	public function define_constants() {
 		$defines = array(
-			'WP_DIR' => plugin_dir_path( __FILE__ ),
-			'WP_URI' => plugin_dir_url( __FILE__ ),
-			'WP_TEMP_URL' => trailingslashit( get_template_directory_uri() ),
-			'WP_STYLESHEET_DIR' => trailingslashit( get_stylesheet_directory() ),
-			'WP_STYLESHEET_URL' => trailingslashit( get_stylesheet_directory_uri() ),
+			'CURATOR_DIR' => plugin_dir_path( __FILE__ ),
+			'CURATOR_URI' => plugin_dir_url( __FILE__ ),
+			'CURATOR_TEMP_URL' => trailingslashit( get_template_directory_uri() ),
+			'CURATOR_STYLESHEET_DIR' => trailingslashit( get_stylesheet_directory() ),
+			'CURATOR_STYLESHEET_URL' => trailingslashit( get_stylesheet_directory_uri() ),
 		);
 
 		foreach( $defines as $k => $v ) {
@@ -98,14 +98,10 @@ function curator_feed($args = '')
     echo wp_kses($widget->render($args), $widget->allowed_html);
 }
 
-function curator_add_admin_class() {
-    echo '<script type="text/javascript">
-		jQuery(function($){
-            $("#toplevel_page_curator-settings").find("img").css("width","18px");
-        });
-    </script>';
+function curator_add_admin_styles() {
+    echo '<style>#toplevel_page_curator-settings img { width: 18px; }</style>';
 }
 
-add_action('admin_footer', 'curator_add_admin_class');
+add_action('admin_head', 'curator_add_admin_styles');
 
 endif;

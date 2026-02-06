@@ -13,7 +13,8 @@ class CuratorShortcode {
 	public function curator_feed( $atts ) {
     $widget = new CuratorFeed();
     $html = wp_kses($widget->render($atts), $widget->allowed_html);
-		return apply_filters( 'wp-shortcode-curator-feed', $html);
+    // Re-sanitize after filter to prevent malicious filter hooks from injecting arbitrary HTML
+    return wp_kses(apply_filters( 'wp-shortcode-curator-feed', $html), $widget->allowed_html);
 	}
 }
 endif;

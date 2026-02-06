@@ -42,7 +42,7 @@ class CuratorFeed {
       $this->args = array_merge($this->args, $args);
       $this->setFeed();
 
-      $html = '<div id="curator-feed-default" data-crt-feed-id="'.$this->feed_id.'" data-crt-source="wordpress-plugin">';
+      $html = '<div id="curator-feed-default" data-crt-feed-id="'.esc_attr($this->feed_id).'" data-crt-source="wordpress-plugin">';
       if ($this->options['powered_by']) {
           $html .= '<a href="https://curator.io" target="_blank" class="crt-logo">Powered by Curator.io</a>';
       }
@@ -56,7 +56,7 @@ class CuratorFeed {
       $html = '<script>';
       $html .= '(function(){';
       $html .= 	'var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;';
-      $html .= 	'i.src = "https://cdn.curator.io/published/'.$this->feed_id.'.js";';
+      $html .= 'i.src = "https://cdn.curator.io/published/'.esc_js($this->feed_id).'.js";';
       $html .= 	'e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);';
       $html .= '})();';
       $html .= '</script>';
@@ -66,14 +66,29 @@ class CuratorFeed {
     private function setFeed()
     {
         if (!empty($this->args['feed_id'])) {
-            $this->feed_id = $this->args['feed_id'];
+            $feed_id = sanitize_text_field($this->args['feed_id']);
+            if ($this->isValidFeedId($feed_id)) {
+                $this->feed_id = $feed_id;
+            }
         } else if (!empty($this->args['feed_public_key'])) {
-            $this->feed_id = $this->args['feed_public_key'];
+            $feed_id = sanitize_text_field($this->args['feed_public_key']);
+            if ($this->isValidFeedId($feed_id)) {
+                $this->feed_id = $feed_id;
+            }
         } else if (isset($this->options) && !empty($this->options['default_feed_id'])) {
-            $this->feed_id = $this->options['default_feed_id'];
+            $feed_id = sanitize_text_field($this->options['default_feed_id']);
+            if ($this->isValidFeedId($feed_id)) {
+                $this->feed_id = $feed_id;
+            }
         } else {
             $this->feed_id = $this->DEMO_FEED_ID;
         }
+    }
+
+    private function isValidFeedId($feed_id) {
+        // Validate feed ID format (alphanumeric with hyphens, typical Curator.io format)
+        return preg_match('/^[a-zA-Z0-9\-]{20,50}$/', $feed_id) || 
+               preg_match('/^[a-f0-9\-]{36}$/', $feed_id); // UUID format
     }
 }
 

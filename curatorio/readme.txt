@@ -3,8 +3,8 @@ Description: Show all your social media posts in a beautiful feed.
 Contributors: curatorio
 Tags: social media feed, aggregator, Facebook, Twitter, Instagram, Tiktok, Google Reviews
 Requires at least: 4.0
-Tested up to: 6.8.1
-Stable tag: 1.9.5
+Tested up to: 6.9
+Stable tag: 1.9.6
 License: GNUGPLv3
 
 Aggregate and embed your social media posts on your site (Facebook, Twitter, Instagram, Pinterest and many more) as a beautiful social media feed.
@@ -29,6 +29,11 @@ Once you're done that you can use the shortcode:
 `[curator feed_public_key="FEED_PUBLIC_KEY"]` in any post or page
 
 == Changelog ==
+= 1.9.6 =
+* Added CSRF protection to settings
+* Enhanced input validation for feed IDs
+* Security hardening improvements
+* Renamed generic constants to use CURATOR_ prefix to avoid conflicts
 = 1.9.5 =
 * Compatibility check for Wordpress 6.8.1
 = 1.9.4 =

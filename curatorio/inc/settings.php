@@ -30,7 +30,7 @@ class CuratorSettings {
             'manage_options',
             'curator-settings',
             array( $this, 'create_admin_page' ),
-            WP_URI . 'images/Curator_Logomark2.svg',
+            CURATOR_URI . 'images/Curator_Logomark2.svg',
             80
         );
 	}
@@ -85,6 +85,11 @@ class CuratorSettings {
      */
     public function sanitize( $input )
     {
+        // Verify nonce - WordPress Settings API uses {option_group}-options as action
+        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'curator_options-options')) {
+            wp_die('Security check failed');
+        }
+
         $validOptions = [
             'default_feed_id',
             'powered_by',
@@ -142,7 +147,7 @@ class CuratorSettings {
         $html .= '<p>Sign up to the <a href="https://app.curator.io/" target="_blank">Curator Dashboard</a> to set up a social feed.</p>';
         $html .= '<p>You\'ll need your unique <code>FEED_PUBLIC_KEY</code> to use the widgets.<p>
            <p>You can find the <code>FEED_PUBLIC_KEY</code> here:</p>';
-        $html .= '<img src="' . WP_URI . 'images/feed-public-key.png">';
+        $html .= '<img src="' . CURATOR_URI . 'images/feed-public-key.png">';
 
         echo wp_kses($html, array(
           'h2' => array(),
