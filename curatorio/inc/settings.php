@@ -1,4 +1,8 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 if ( !class_exists( 'CuratorSettings' ) ) :
 
 class CuratorSettings {
@@ -85,10 +89,7 @@ class CuratorSettings {
      */
     public function sanitize( $input )
     {
-        // Verify nonce - WordPress Settings API uses {option_group}-options as action
-        if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'curator_options-options')) {
-            wp_die('Security check failed');
-        }
+        // Nonce verification is handled by the WordPress Settings API before this callback is called.
 
         $validOptions = [
             'default_feed_id',
@@ -147,13 +148,12 @@ class CuratorSettings {
         $html .= '<p>Sign up to the <a href="https://app.curator.io/" target="_blank">Curator Dashboard</a> to set up a social feed.</p>';
         $html .= '<p>You\'ll need your unique <code>FEED_PUBLIC_KEY</code> to use the widgets.<p>
            <p>You can find the <code>FEED_PUBLIC_KEY</code> here:</p>';
-        $html .= '<img src="' . CURATOR_URI . 'images/feed-public-key.png">';
+        $html .= '<img src="' . esc_url(CURATOR_URI . 'images/feed-public-key.png') . '">';
 
         echo wp_kses($html, array(
           'h2' => array(),
-          'p' => array(
-                'a' => array('href' => array()),
-          ),
+          'p' => array(),
+          'a' => array('href' => array(), 'target' => array()),
           'code' => array(),
           'img' => array('src' => array()),
           ));
@@ -162,9 +162,12 @@ class CuratorSettings {
     public function usageContent()
     {
         $html = '<h2>Usage</h2>';
+        $html .= '<h4>Using the Curator Feed block (recommended)</h4>';
+        $html .= '<p>In the Block Editor, click the <strong>+</strong> button to add a block and search for <strong>Curator Feed Embed</strong>. You can optionally enter a Feed Public Key in the block settings sidebar. If left empty, the default feed from the <a href="' . esc_url(add_query_arg(array('page' => 'curator-settings', 'tab' => 'settings'), admin_url('admin.php'))) . '">Settings</a> tab will be used.</p>';
         $html .= '<h4>Using shortcode in editor</h4>';
         $html .= '<p>Edit post/page and add the <code>[curator feed_public_key="FEED_PUBLIC_KEY"]</code> shortcode - where <code>FEED_PUBLIC_KEY</code> is the code from the Dashboard (detailed above).</p>';
         $html .= '<p>For example: <code>[curator feed_public_key="' . $this->TEST_FEED_ID . '"]</code><p/>';
+        $html .= '<p>If you have saved a Default Feed Public Key in the <a href="' . esc_url(add_query_arg(array('page' => 'curator-settings', 'tab' => 'settings'), admin_url('admin.php'))) . '">Settings</a> tab, you can simply use <code>[curator]</code> without specifying a feed public key.</p>';
         $html .= '<h4>In theme templates</h4>';
         $html .= '<p>To code the widget in a classic theme template you can use the following php function:</p>';
         $html .= '<code>echo curator_feed("FEED_PUBLIC_KEY");</code>';
@@ -173,13 +176,13 @@ class CuratorSettings {
         $html .= '<p>To code the widget in a block based theme template you place the shorcode in between html <strong>wp:shortcode</strong> comment tags:</p>';
         $html .= '<code>[curator feed_public_key="FEED_PUBLIC_KEY"]</code>';
 
-        echo wp_kses($html, array('h2' => array(), 'h4' => array(), 'p' => array(), 'code' => array(), 'strong' => array(), 'html_comment' => array()));
+        echo wp_kses($html, array('h2' => array(), 'h4' => array(), 'p' => array(), 'code' => array(), 'strong' => array(), 'html_comment' => array(), 'a' => array('href' => array())));
     }
 
     public function settingsContent()
     {
         $html = '<h2>Default Feed</h2>';
-        $html .= '<p>Use the form below to define a default feed, after defining a default feed you can use the shortcode <code>[curator feed_public_key=""]</code></p>';
+        $html .= '<p>Paste your Feed Public Key below to set a default feed. After saving, you can use the shortcode <code>[curator]</code> without specifying a feed public key. The plugin will automatically use the saved Default Feed Public Key.</p>';
 
         add_settings_field(
             'default_feed_id', // ID
@@ -213,8 +216,8 @@ class CuratorSettings {
 
     public function field_powered_by_callback()
     {
-        $checked = isset($this->options['powered_by']) ? 1 : 0;
-        print '<input type="checkbox" id="powered_by" name="curator_options[powered_by]" value="1" ' . ($checked ? 'checked' : '') . '/>';
+        $checked = !empty($this->options['powered_by']) ? 1 : 0;
+        print '<input type="checkbox" id="powered_by" name="curator_options[powered_by]" value="1" ' . checked(1, $checked, false) . '/>';
     }
 }
 endif;

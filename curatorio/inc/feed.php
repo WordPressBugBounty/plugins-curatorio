@@ -1,4 +1,8 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 if ( !class_exists( 'CuratorFeed' ) ) :
 
 class CuratorFeed {
@@ -12,8 +16,14 @@ class CuratorFeed {
     ];
     public $allowed_html = array(
       'div' => array(
-        'a' => array('href' => array(), 'target' => array(), 'class' => array()),
-        'id' => array(), 'data-crt-feed-id' => array(), 'data-crt-source' => array()
+        'id' => array(),
+        'data-crt-feed-id' => array(),
+        'data-crt-source' => array(),
+      ),
+      'a' => array(
+        'href' => array(),
+        'target' => array(),
+        'class' => array(),
       ),
     );
 
@@ -53,14 +63,11 @@ class CuratorFeed {
 
     public function curator_feed_js()
     {
-      $html = '<script>';
-      $html .= '(function(){';
-      $html .= 	'var i, e, d = document, s = "script";i = d.createElement("script");i.async = 1;';
-      $html .= 'i.src = "https://cdn.curator.io/published/'.esc_js($this->feed_id).'.js";';
-      $html .= 	'e = d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i, e);';
-      $html .= '})();';
-      $html .= '</script>';
-      echo wp_kses($html, array('script' => array()));
+      $feed_id = esc_js($this->feed_id);
+      $inline = "(function(){var i,e,d=document,s='script';i=d.createElement('script');i.async=1;i.src='https://cdn.curator.io/published/{$feed_id}.js';e=d.getElementsByTagName(s)[0];e.parentNode.insertBefore(i,e);})();";
+      wp_register_script('curator-feed-loader', false, array(), '1.0', true);
+      wp_enqueue_script('curator-feed-loader');
+      wp_add_inline_script('curator-feed-loader', $inline);
     }
 
     private function setFeed()

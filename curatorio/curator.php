@@ -1,10 +1,14 @@
 <?php
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  *  Plugin Name: Curator.io
  *  Plugin URI: https://curator.io/wordpress-plugin/
  *  Description: A free social media wall and post aggregator which pulls together all your media channels in a brandable feed that can be embedded anywhere.
  *  Author: Thomas Garrood
- *  Version: 1.9.6
+ *  Version: 1.9.7
  *  Text Domain: curator
  *  License: GNUGPLv3
  *  @since 1.1
@@ -33,10 +37,11 @@ class CuratorPlugin {
 		$this->stylesheet_dir = CURATOR_STYLESHEET_DIR;
 		$this->stylesheet_uri = CURATOR_STYLESHEET_URL;
 
-		$this->version = '1.9.6';
+		$this->version = '1.9.7';
 
 		// load include files
 		$this->shortcode = new CuratorShortcode();
+		new CuratorBlock();
 		if( is_admin() ) {
 			$this->settings = new CuratorSettings();
 		}
@@ -58,6 +63,7 @@ class CuratorPlugin {
 		require_once CURATOR_DIR . 'inc/feed.php';
 		require_once CURATOR_DIR . 'inc/settings.php';
 		require_once CURATOR_DIR . 'inc/shortcode.php';
+		require_once CURATOR_DIR . 'inc/block.php';
 	}
 
 	public function define_constants() {
@@ -77,7 +83,7 @@ class CuratorPlugin {
 	}
 
   function plugin_settings_link($links) {
-      $url = get_admin_url() . 'admin.php?page=curator-settings';
+      $url = esc_url( admin_url( 'admin.php?page=curator-settings' ) );
       $settings_link = '<a href="'.$url.'">' . __( 'Settings', 'curator' ) . '</a>';
       array_unshift( $links, $settings_link );
       return $links;
